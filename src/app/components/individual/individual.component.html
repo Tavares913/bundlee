@@ -1,0 +1,31 @@
+<div [ngStyle]="{ padding: theme.spacing['2'] }">
+  <form class="form">
+    <mat-grid-list cols="12" [ngStyle]="{ width: '100%' }">
+      <mat-grid-tile [colspan]="3">
+        <mat-form-field
+          [ngStyle]="{ marginRight: theme.spacing['2'], width: '100%' }"
+        >
+          <mat-label>For</mat-label>
+          <mat-select>
+            <mat-option *ngFor="let media of media" [value]="media">{{
+              util.capitalizeEachWord(media)
+            }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile colspan="9">
+        <mat-form-field [ngStyle]="{ width: '100%' }">
+          <mat-label>Search</mat-label>
+          <input
+            matInput
+            placeholder="..."
+            [(ngModel)]="search"
+            name="search"
+            (keyup.enter)="searchIndividual()"
+          />
+          <mat-icon matSuffix (click)="searchIndividual()">search</mat-icon>
+        </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </form>
+</div>

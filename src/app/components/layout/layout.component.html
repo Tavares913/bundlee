@@ -1,17 +1,45 @@
 <mat-toolbar
   class="layout-container"
-  [ngStyle]="{ backgroundColor: colours.navbar }"
+  [ngStyle]="{ backgroundColor: theme.colours.navbar }"
 >
-  <div class="layout-content">
-    <button mat-icon-button>
-      <mat-icon>menu</mat-icon>
-    </button>
-    <div>
-      <span>Bundlee</span>
-    </div>
-  </div>
-
-  <div class="layout-content">
-    <button mat-button>Login</button>
-  </div>
+  <mat-grid-list cols="12" [ngStyle]="{ width: '100%' }">
+    <mat-grid-tile [colspan]="5">
+      <div class="layout-content grid-tile-container">
+        <button mat-icon-button routerLink="/home">
+          <mat-icon>home</mat-icon>
+        </button>
+        <div>
+          <span>Bundlee</span>
+        </div>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="6">
+      <div class="grid-tile-container">
+        <a
+          routerLink="/collections"
+          [ngStyle]="{
+            paddingRight: theme.spacing['6'],
+            textDecoration: 'none',
+            color: 'black'
+          }"
+          >Collections</a
+        >
+        <a
+          routerLink="/individual"
+          [ngStyle]="{
+            paddingRight: theme.spacing['6'],
+            textDecoration: 'none',
+            color: 'black'
+          }"
+          >Individual</a
+        >
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="1">
+      <div class="grid-tile-container">
+        <button mat-button>Login</button>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
 </mat-toolbar>
+<router-outlet></router-outlet>

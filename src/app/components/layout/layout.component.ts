@@ -7,5 +7,5 @@ import { Theme } from 'src/app/theme';
   styleUrls: ['./layout.component.css'],
 })
 export class LayoutComponent {
-  colours = Theme.colours;
+  theme = Theme;
 }
