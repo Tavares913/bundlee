@@ -1,0 +1,20 @@
+<div
+  [ngStyle]="{
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: theme.spacing['4']
+  }"
+  *ngIf="this.individuals.length === 0 && !this.searched"
+>
+  <p>Enter your search!</p>
+</div>
+<div
+  [ngStyle]="{
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: theme.spacing['4']
+  }"
+  *ngIf="this.individuals.length === 0 && this.searched"
+>
+  <p>No results found.</p>
+</div>

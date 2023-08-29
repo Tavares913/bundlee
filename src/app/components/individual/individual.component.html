@@ -6,8 +6,8 @@
           [ngStyle]="{ marginRight: theme.spacing['2'], width: '100%' }"
         >
           <mat-label>For</mat-label>
-          <mat-select>
-            <mat-option *ngFor="let media of media" [value]="media">{{
+          <mat-select [(value)]="media">
+            <mat-option *ngFor="let media of mediaOptions" [value]="media">{{
               util.capitalizeEachWord(media)
             }}</mat-option>
           </mat-select>
@@ -28,4 +28,16 @@
       </mat-grid-tile>
     </mat-grid-list>
   </form>
+  <div
+    [ngStyle]="{ display: 'flex', justifyContent: 'center' }"
+    *ngIf="loading"
+  >
+    <app-loading-spinner></app-loading-spinner>
+  </div>
+  <div>
+    <app-individual-list
+      [individuals]="individuals"
+      [searched]="searched"
+    ></app-individual-list>
+  </div>
 </div>

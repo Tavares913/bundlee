@@ -16,6 +16,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
+import { HttpClientModule } from '@angular/common/http';
+import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { IndividualListComponent } from './components/individual/individual-list/individual-list.component';
 
 @NgModule({
   declarations: [
@@ -24,10 +28,13 @@ import { MatSelectModule } from '@angular/material/select';
     IndividualComponent,
     CollectionsComponent,
     HomeComponent,
+    LoadingSpinnerComponent,
+    IndividualListComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
     FormsModule,
     BrowserAnimationsModule,
     MatToolbarModule,
@@ -38,6 +45,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatInputModule,
     MatFormFieldModule,
     MatSelectModule,
+    MatSnackBarModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
