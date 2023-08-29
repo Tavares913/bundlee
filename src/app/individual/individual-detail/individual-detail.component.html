@@ -1,0 +1,33 @@
+<h2 mat-dialog-title>{{ individual && individual.title }}</h2>
+<mat-dialog-content>
+  <div [ngStyle]="{ display: 'flex' }">
+    <div [ngStyle]="{ width: '50%' }">
+      <img
+        mat-card-image
+        [ngStyle]="{ objectFit: 'contain', height: '512px' }"
+        [src]="individual && individual.coverLink"
+        alt="Series Thumbnail"
+      />
+      <div [ngStyle]="{ marginTop: theme.spacing['1'] }">
+        {{ individual?.year && individual?.year }}
+      </div>
+      <div>
+        {{ individual?.rating && "Rating: " + individual?.rating?.toFixed(2) }}
+      </div>
+      <div>
+        {{
+          individual?.status &&
+            "Status: " + util.capitalizeEachWord(individual?.status)
+        }}
+      </div>
+    </div>
+    <div [ngStyle]="{ width: '50%' }">
+      <p>{{ individual && individual.description }}</p>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button>Favourite</button>
+  <button mat-button>Add to Collection</button>
+</mat-dialog-actions>

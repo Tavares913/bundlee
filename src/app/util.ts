@@ -1,5 +1,6 @@
 export class Util {
-  static capitalizeEachWord(text: string) {
+  static capitalizeEachWord(text: string | null | undefined) {
+    if (!text) return '';
     const words = text.split(' ');
     let retval = '';
     for (let word of words)

@@ -20,6 +20,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { IndividualListComponent } from './components/individual/individual-list/individual-list.component';
+import { MatCardModule } from '@angular/material/card';
+import { IndividualDetailComponent } from './individual/individual-detail/individual-detail.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -30,6 +33,7 @@ import { IndividualListComponent } from './components/individual/individual-list
     HomeComponent,
     LoadingSpinnerComponent,
     IndividualListComponent,
+    IndividualDetailComponent,
   ],
   imports: [
     BrowserModule,
@@ -46,6 +50,8 @@ import { IndividualListComponent } from './components/individual/individual-list
     MatFormFieldModule,
     MatSelectModule,
     MatSnackBarModule,
+    MatCardModule,
+    MatDialogModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

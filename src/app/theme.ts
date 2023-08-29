@@ -1,6 +1,11 @@
 export class Theme {
   static colours = {
     navbar: '#9f46a3',
+    rating: {
+      green: 'rgb(91, 245, 103, 0.5)',
+      yellow: 'rgb(181, 186, 24, 0.5)',
+      red: 'rgb(143, 27, 14, 0.5)',
+    },
   };
   static spacing = {
     1: '8px',

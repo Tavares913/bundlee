@@ -21,9 +21,11 @@
             placeholder="..."
             [(ngModel)]="search"
             name="search"
-            (keyup.enter)="searchIndividual()"
+            (keyup.enter)="searchIndividual({ refresh: true })"
           />
-          <mat-icon matSuffix (click)="searchIndividual()">search</mat-icon>
+          <mat-icon matSuffix (click)="searchIndividual({ refresh: true })"
+            >search</mat-icon
+          >
         </mat-form-field>
       </mat-grid-tile>
     </mat-grid-list>
@@ -38,6 +40,34 @@
     <app-individual-list
       [individuals]="individuals"
       [searched]="searched"
+      [loading]="loading"
     ></app-individual-list>
+  </div>
+  <div
+    *ngIf="
+      this.individuals.length > 0 &&
+      offset <= this.total &&
+      !this.loadingPaginate
+    "
+    [ngStyle]="{
+      width: '100%',
+      display: 'flex',
+      justifyContent: 'center',
+      marginTop: theme.spacing['2']
+    }"
+    (click)="searchIndividual({ refresh: false })"
+  >
+    <mat-icon>keyboard_arrow_down</mat-icon>
+  </div>
+  <div
+    *ngIf="this.loadingPaginate"
+    [ngStyle]="{
+      width: '100%',
+      display: 'flex',
+      justifyContent: 'center',
+      marginTop: theme.spacing['2']
+    }"
+  >
+    <app-loading-spinner></app-loading-spinner>
   </div>
 </div>

@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {
-  MangaDexGetResponse,
+  MangaDexRatingResponse,
+  MangaDexSearchMangaResponse,
   MangadexService,
 } from 'src/app/services/mangadex.service';
 import { Theme } from 'src/app/theme';
@@ -27,13 +28,11 @@ export class IndividualComponent {
   search: string = '';
   media: string = 'anime';
   loading: boolean = false;
-  prevSearch: SearchInfo = {
-    search: '',
-    media: '',
-  };
+  loadingPaginate: boolean = false;
   searched = false;
   individuals: Individual[] = [];
 
+  total = 0;
   offset = 0;
   limit = MangadexService.MangadexPaginationLimit;
 
@@ -42,29 +41,28 @@ export class IndividualComponent {
     private snackBar: MatSnackBar
   ) {}
 
-  searchIndividual() {
-    if (
-      this.prevSearch.search !== this.search ||
-      this.prevSearch.media !== this.media
-    )
+  searchIndividual(config: { refresh: boolean }) {
+    if (config.refresh) {
       this.offset = 0;
+      this.loading = true;
+    } else {
+      this.loadingPaginate = true;
+    }
 
     if (this.media === 'manga / ln') {
-      this.loading = true;
       this.mangadexService
         .searchMangaPagination(this.search, {
           limit: this.limit,
           offset: this.offset,
         })
         .subscribe(
-          (data: MangaDexGetResponse) => {
+          (data: MangaDexSearchMangaResponse) => {
             this.offset += this.limit;
-            this.prevSearch = { search: this.search, media: this.media };
-            console.log(data);
-            if (data.result !== 'ok') {
-              return;
-            }
+            this.total = data.total;
             const formattedData: Individual[] = data.data.map((d) => {
+              const coverRelationship = d.relationships.find(
+                (r: any) => r.type === 'cover_art'
+              );
               return {
                 id: d.id,
                 title:
@@ -72,18 +70,46 @@ export class IndividualComponent {
                   d.attributes.description['jp'] ||
                   '',
                 type: d.type,
-                rating: undefined,
+                rating: null,
                 year: d.attributes.year,
                 description:
                   d.attributes.description['en'] ||
                   d.attributes.description['jp'] ||
                   '',
                 status: d.attributes.status,
+                thumbnailLink: coverRelationship
+                  ? `https://uploads.mangadex.org/covers/${d.id}/${coverRelationship.attributes.fileName}.256.jpg`
+                  : '',
+                coverLink: coverRelationship
+                  ? `https://uploads.mangadex.org/covers/${d.id}/${coverRelationship.attributes.fileName}.512.jpg`
+                  : '',
               };
             });
             this.loading = false;
+            this.loadingPaginate = false;
             this.searched = true;
-            this.individuals = formattedData;
+            if (config.refresh) this.individuals = formattedData;
+            else this.individuals = [...this.individuals, ...formattedData];
+
+            this.mangadexService
+              .getRatings(this.individuals.map((i) => i.id))
+              .subscribe(
+                (data: MangaDexRatingResponse) => {
+                  for (const [key, value] of Object.entries(data.statistics)) {
+                    const i = this.individuals.findIndex((e) => e.id === key);
+                    if (i === -1) continue;
+                    this.individuals[i] = {
+                      ...this.individuals[i],
+                      rating: value.rating.bayesian,
+                    };
+                  }
+                },
+                (e) => {
+                  this.snackBar.open(e.message, 'Close', {
+                    duration: 5000,
+                  });
+                }
+              );
           },
           (e) => {
             this.snackBar.open(e.message, 'Close', {
@@ -96,11 +122,6 @@ export class IndividualComponent {
   }
 }
 
-export interface SearchInfo {
-  search: string;
-  media: string;
-}
-
 export interface Individual {
   id: string;
   title: string;
@@ -108,4 +129,7 @@ export interface Individual {
   year: number;
   description: string;
   status: string;
+  rating: number | null;
+  coverLink: string;
+  thumbnailLink: string;
 }

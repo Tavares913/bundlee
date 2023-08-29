@@ -19,20 +19,40 @@ export class MangadexService {
     };
 
     const paginationUrl = `limit=${paginationInfo.limit}&offset=${paginationInfo.offset}`;
-    return this.http.get<MangaDexGetResponse>(
-      `${this.baseUrl}/manga?${paginationUrl}`,
+    return this.http.get<MangaDexSearchMangaResponse>(
+      `${this.baseUrl}/manga?${paginationUrl}&includes[]=manga&includes[]=cover_art&includes[]=author&includes[]=artist&includes[]=tag&includes[]=creator`,
       options
+    );
+  }
+  getRatings(ids: string[]) {
+    const ratingSearchString = ids.reduce(
+      (acc, cur) => (acc += `&manga[]=${cur}`),
+      ''
+    );
+    return this.http.get<MangaDexRatingResponse>(
+      `${this.baseUrl}/statistics/manga?${ratingSearchString.substring(1)}`
     );
   }
 }
 
-export interface MangaDexGetResponse {
+export interface MangaDexSearchMangaResponse {
   data: any[];
   limit: number;
   offset: number;
   response: string;
   result: string;
   total: number;
+}
+
+export interface MangaDexRatingResponse {
+  result: string;
+  statistics: {
+    [key: string]: {
+      comments: { threadId: number; repliesCount: number };
+      follows: number;
+      rating: { average: number; bayesian: number };
+    };
+  };
 }
 
 export interface MangaDexPaginationInfo {

@@ -4,7 +4,7 @@
     justifyContent: 'center',
     marginTop: theme.spacing['4']
   }"
-  *ngIf="this.individuals.length === 0 && !this.searched"
+  *ngIf="this.individuals.length === 0 && !this.searched && !this.loading"
 >
   <p>Enter your search!</p>
 </div>
@@ -14,7 +14,80 @@
     justifyContent: 'center',
     marginTop: theme.spacing['4']
   }"
-  *ngIf="this.individuals.length === 0 && this.searched"
+  *ngIf="this.individuals.length === 0 && this.searched && !this.loading"
 >
   <p>No results found.</p>
+</div>
+<div *ngIf="this.individuals.length > 0 && !this.loading">
+  <mat-grid-list cols="12" rowHeight="450px" [ngStyle]="{ width: '100%' }">
+    <mat-grid-tile
+      *ngFor="let individual of individuals"
+      [colspan]="3"
+      [ngStyle]="{
+        height: '350px',
+        marginRight: '50px'
+      }"
+      (click)="navigateToIndividual(individual)"
+    >
+      <mat-card
+        [ngStyle]="{
+          border: '1px solid lightgrey',
+          width: '100%',
+          height: '100%',
+          cursor: 'pointer'
+        }"
+      >
+        <mat-card-header
+          [ngStyle]="{
+            marginBottom: theme.spacing['2'],
+            maxHeight: '250px',
+            height: '250px',
+            overflow: 'auto'
+          }"
+        >
+          <mat-card-title>{{
+            individual.title ? individual.title : "No Title"
+          }}</mat-card-title>
+          <mat-card-subtitle>{{
+            util.capitalizeEachWord(individual.type)
+          }}</mat-card-subtitle>
+        </mat-card-header>
+        <img
+          mat-card-image
+          [ngStyle]="{ objectFit: 'contain', height: '256px' }"
+          [src]="individual.thumbnailLink"
+          alt="Series Thumbnail"
+        />
+        <mat-card-content></mat-card-content>
+        <mat-card-actions>
+          <div
+            [ngStyle]="{
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'flex-end',
+            }"
+          >
+            <div
+              [ngStyle]="{
+                width: '40px',
+                height: '40px',
+                borderRadius: '50%',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor:
+                  individual.rating && individual.rating > 8
+                    ? theme.colours.rating.green
+                    : individual.rating && individual.rating > 6
+                    ? theme.colours.rating.yellow
+                    : theme.colours.rating.red
+              }"
+            >
+              {{ individual.rating ? individual.rating.toFixed(2) : "N/A" }}
+            </div>
+          </div>
+        </mat-card-actions>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
 </div>
