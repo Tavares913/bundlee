@@ -1,7 +1,7 @@
 <div [ngStyle]="{ padding: theme.spacing['2'] }">
   <form class="form">
     <mat-grid-list cols="12" [ngStyle]="{ width: '100%' }">
-      <mat-grid-tile [colspan]="3">
+      <mat-grid-tile [colspan]="media === 'games' ? 2 : 3">
         <mat-form-field
           [ngStyle]="{ marginRight: theme.spacing['2'], width: '100%' }"
         >
@@ -13,7 +13,21 @@
           </mat-select>
         </mat-form-field>
       </mat-grid-tile>
-      <mat-grid-tile colspan="9">
+      <mat-grid-tile *ngIf="media === 'games'" [colspan]="2">
+        <mat-form-field
+          [ngStyle]="{ marginRight: theme.spacing['2'], width: '100%' }"
+        >
+          <mat-label>Platform</mat-label>
+          <mat-select [(value)]="platform">
+            <mat-option
+              *ngFor="let platform of platformOptions"
+              [value]="platform"
+              >{{ util.capitalizeEachWord(platform) }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="media === 'games' ? 8 : 9">
         <mat-form-field [ngStyle]="{ width: '100%' }">
           <mat-label>Search</mat-label>
           <input
@@ -46,7 +60,8 @@
   <div
     *ngIf="
       this.individuals.length > 0 &&
-      offset <= this.total &&
+      this.paginationInfo.page * this.paginationInfo.perPage <=
+        this.paginationInfo.total &&
       !this.loadingPaginate
     "
     [ngStyle]="{

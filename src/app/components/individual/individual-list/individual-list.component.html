@@ -67,24 +67,7 @@
               justifyContent: 'flex-end',
             }"
           >
-            <div
-              [ngStyle]="{
-                width: '40px',
-                height: '40px',
-                borderRadius: '50%',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor:
-                  individual.rating && individual.rating > 8
-                    ? theme.colours.rating.green
-                    : individual.rating && individual.rating > 6
-                    ? theme.colours.rating.yellow
-                    : theme.colours.rating.red
-              }"
-            >
-              {{ individual.rating ? individual.rating.toFixed(2) : "N/A" }}
-            </div>
+            <mat-icon [ngStyle]="{ color: 'red' }">favorite</mat-icon>
           </div>
         </mat-card-actions>
       </mat-card>

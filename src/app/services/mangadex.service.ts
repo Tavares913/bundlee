@@ -1,24 +1,23 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { PaginationInfo } from './anilist.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MangadexService {
   private baseUrl = 'https://api.mangadex.org';
-  public static MangadexPaginationLimit = 20;
 
   constructor(private http: HttpClient) {}
 
-  searchMangaPagination(
-    searchTerm: string,
-    paginationInfo: MangaDexPaginationInfo
-  ) {
+  searchMangaPagination(searchTerm: string, paginationInfo: PaginationInfo) {
     const options = {
       params: new HttpParams().set('title', searchTerm),
     };
 
-    const paginationUrl = `limit=${paginationInfo.limit}&offset=${paginationInfo.offset}`;
+    const paginationUrl = `limit=${paginationInfo.perPage}&offset=${
+      (paginationInfo.page - 1) * paginationInfo.perPage
+    }`;
     return this.http.get<MangaDexSearchMangaResponse>(
       `${this.baseUrl}/manga?${paginationUrl}&includes[]=manga&includes[]=cover_art&includes[]=author&includes[]=artist&includes[]=tag&includes[]=creator`,
       options
@@ -53,9 +52,4 @@ export interface MangaDexRatingResponse {
       rating: { average: number; bayesian: number };
     };
   };
-}
-
-export interface MangaDexPaginationInfo {
-  limit: number;
-  offset: number;
 }

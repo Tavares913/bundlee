@@ -9,16 +9,24 @@
         alt="Series Thumbnail"
       />
       <div [ngStyle]="{ marginTop: theme.spacing['1'] }">
-        {{ individual?.year && individual?.year }}
-      </div>
-      <div>
-        {{ individual?.rating && "Rating: " + individual?.rating?.toFixed(2) }}
+        {{ individual?.year ? "Release: " + individual?.year : "" }}
       </div>
       <div>
         {{
           individual?.status &&
             "Status: " + util.capitalizeEachWord(individual?.status)
         }}
+      </div>
+      <div *ngIf="individual?.rating">
+        Ratings:
+        <div [ngStyle]="{ marginLeft: theme.spacing['1'] }">
+          <p
+            [ngStyle]="{ margin: 0 }"
+            *ngFor="let rat of individual?.rating | keyvalue"
+          >
+            {{ util.capitalizeEachWord(rat.key) }} : {{ rat.value.toFixed(2) }}
+          </p>
+        </div>
       </div>
     </div>
     <div [ngStyle]="{ width: '50%' }">
