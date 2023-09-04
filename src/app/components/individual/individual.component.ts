@@ -4,6 +4,7 @@ import {
   AnilistService,
   PaginationInfo,
 } from 'src/app/services/anilist.service';
+import { ImdbService } from 'src/app/services/imdb.service';
 import {
   MangaDexRatingResponse,
   MangaDexSearchMangaResponse,
@@ -22,7 +23,7 @@ export class IndividualComponent {
   theme = Theme;
   util = Util;
 
-  mediaOptions: string[] = ['anime', 'manga', 'games', 'movies', 'tv shows'];
+  mediaOptions: string[] = ['anime', 'manga', 'games', 'movies / tv shows'];
   platformOptions: string[] = [
     'PC',
     'GBA',
@@ -61,6 +62,7 @@ export class IndividualComponent {
     private mangadexService: MangadexService,
     private anilistService: AnilistService,
     private metacriticService: MetacriticService,
+    private imdbService: ImdbService,
     private snackBar: MatSnackBar
   ) {}
 
@@ -192,12 +194,39 @@ export class IndividualComponent {
       //   this.platform
       // );
       // console.log(data);
-    } else if (this.media === 'movies') {
-      const res = await fetch(
-        'https://imdb-api.projects.thetuhin.com/title/tt6522580'
+    } else if (this.media === 'movies / tv shows') {
+      this.imdbService.searchMovies(this.search).subscribe(
+        (data) => {
+          const formattedData = data.results.map((d) => {
+            return {
+              id: d.id,
+              title: d.title,
+              type: d.type.toLowerCase(),
+              year: d.year,
+              description: '',
+              status: '',
+              rating: null,
+              coverLink: d.image_large,
+              thumbnailLink: d.image,
+            };
+          });
+          console.log(formattedData);
+          this.paginationInfo.total = data.results.length;
+          this.paginationInfo.perPage = data.results.length;
+          this.paginationInfo.page = 1;
+          this.loading = false;
+          this.loadingPaginate = false;
+          this.searched = true;
+          if (config.refresh) this.individuals = formattedData;
+          else this.individuals = [...this.individuals, ...formattedData];
+        },
+        (e) => {
+          this.snackBar.open(e.message, 'Close', {
+            duration: 5000,
+          });
+          this.loading = false;
+        }
       );
-      const data = await res.json();
-      console.log(data);
     }
   }
 }

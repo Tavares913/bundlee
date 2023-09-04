@@ -60,7 +60,7 @@
   <div
     *ngIf="
       this.individuals.length > 0 &&
-      this.paginationInfo.page * this.paginationInfo.perPage <=
+      this.paginationInfo.page * this.paginationInfo.perPage <
         this.paginationInfo.total &&
       !this.loadingPaginate
     "
