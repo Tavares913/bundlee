@@ -1,52 +1,37 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MetacriticService {
-  constructor() {}
+  private baseUrl = 'http://localhost:8080/api/metacritic/games';
 
-  async searchGames(search: string, platform: string) {
-    const query = `
-      query getGames($title: String!, $platform: GamePlatform!) {
-        games(input: {title: $title, platform: $platform}) {
-          title
-          platform
-          criticScore
-          url
-          releaseDate
-          developer
-          publisher
-          genres
-          numOfCriticReviews
-          numOfPositiveCriticReviews
-          numOfMixedCriticReviews
-          numOfNegativeCriticReviews
-          productImage
-        }
-      }
-  `;
+  constructor(private http: HttpClient) {}
 
-    const variables = {
-      title: search,
-      platform: platform,
-    };
-
-    const url = 'https://mcgqlapi.com/api',
-      options = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        body: JSON.stringify({
-          query: query,
-          variables: variables,
-        }),
-      };
-
-    const res = await fetch(url, options);
-    const data = await res.json();
-    return data;
+  searchGames(search: string, platform: string) {
+    return this.http.get<MetacriticSearchGamesResponse>(
+      `${this.baseUrl}?search=${search}&platform=${platform}`
+    );
   }
+}
+
+export interface MetacriticSearchGamesResponse {
+  data: {
+    games: {
+      criticScore: number;
+      developer: string;
+      genres: string[];
+      numOfCriticReviews: number;
+      numOfMixedCriticReviews: number;
+      numOfNegativeCriticReviews: number;
+      numOfPositiveCriticReviews: number;
+      platform: string;
+      productImage: string;
+      publisher: string[];
+      releaseDate: string;
+      title: string;
+      url: string;
+    }[];
+  };
 }

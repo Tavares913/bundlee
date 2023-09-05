@@ -10,7 +10,10 @@ import {
   MangaDexSearchMangaResponse,
   MangadexService,
 } from 'src/app/services/mangadex.service';
-import { MetacriticService } from 'src/app/services/metacritic.service';
+import {
+  MetacriticSearchGamesResponse,
+  MetacriticService,
+} from 'src/app/services/metacritic.service';
 import { Theme } from 'src/app/theme';
 import { Util } from 'src/app/util';
 
@@ -189,11 +192,31 @@ export class IndividualComponent {
           }
         );
     } else if (this.media === 'games') {
-      // const data = await this.metacriticService.searchGames(
-      //   this.search,
-      //   this.platform
-      // );
-      // console.log(data);
+      this.metacriticService
+        .searchGames(this.search, this.platform)
+        .subscribe((data: MetacriticSearchGamesResponse) => {
+          console.log(data);
+          const formattedData: Individual[] = data.data.games.map((d) => {
+            return {
+              id: '',
+              title: d.title,
+              type: 'game',
+              year: new Date(d.releaseDate).getFullYear(),
+              description: '',
+              status: '',
+              rating: {
+                metacritic: d.criticScore / 10,
+              },
+              coverLink: d.productImage,
+              thumbnailLink: d.productImage,
+            };
+          });
+          this.loading = false;
+          this.loadingPaginate = false;
+          this.searched = true;
+          if (config.refresh) this.individuals = formattedData;
+          else this.individuals = [...this.individuals, ...formattedData];
+        });
     } else if (this.media === 'movies / tv shows') {
       this.imdbService.searchMovies(this.search).subscribe(
         (data) => {
