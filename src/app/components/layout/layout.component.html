@@ -37,7 +37,11 @@
     </mat-grid-tile>
     <mat-grid-tile [colspan]="1">
       <div class="grid-tile-container">
-        <button mat-button>Login</button>
+        <a
+          routerLink="/login"
+          [ngStyle]="{ textDecoration: 'none', color: 'black' }"
+          >Login</a
+        >
       </div>
     </mat-grid-tile>
   </mat-grid-list>

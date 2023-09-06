@@ -23,6 +23,7 @@ import { IndividualListComponent } from './components/individual/individual-list
 import { MatCardModule } from '@angular/material/card';
 import { IndividualDetailComponent } from './individual/individual-detail/individual-detail.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { LoginComponent } from './components/login/login.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     LoadingSpinnerComponent,
     IndividualListComponent,
     IndividualDetailComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,

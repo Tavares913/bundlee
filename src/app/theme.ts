@@ -6,6 +6,9 @@ export class Theme {
       yellow: 'rgb(181, 186, 24, 0.5)',
       red: 'rgb(143, 27, 14, 0.5)',
     },
+    button: {
+      success: '#2e8705',
+    },
   };
   static spacing = {
     1: '8px',
