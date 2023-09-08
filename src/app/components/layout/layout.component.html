@@ -1,7 +1,4 @@
-<mat-toolbar
-  class="layout-container"
-  [ngStyle]="{ backgroundColor: theme.colours.navbar }"
->
+<mat-toolbar [ngStyle]="{ backgroundColor: theme.colours.navbar }">
   <mat-grid-list cols="12" [ngStyle]="{ width: '100%' }">
     <mat-grid-tile [colspan]="5">
       <div class="layout-content grid-tile-container">
@@ -13,7 +10,7 @@
         </div>
       </div>
     </mat-grid-tile>
-    <mat-grid-tile [colspan]="6">
+    <mat-grid-tile [colspan]="5">
       <div class="grid-tile-container">
         <a
           routerLink="/collections"
@@ -35,13 +32,43 @@
         >
       </div>
     </mat-grid-tile>
-    <mat-grid-tile [colspan]="1">
-      <div class="grid-tile-container">
+    <mat-grid-tile [colspan]="2">
+      <div
+        class="grid-tile-container"
+        [ngStyle]="{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          paddingRight: theme.spacing['3']
+        }"
+      >
         <a
+          *ngIf="!authInfo"
+          routerLink="/register"
+          [ngStyle]="{
+            textDecoration: 'none',
+            color: 'black',
+            marginRight: theme.spacing['2']
+          }"
+        >
+          Register
+        </a>
+        <a
+          *ngIf="!authInfo"
           routerLink="/login"
           [ngStyle]="{ textDecoration: 'none', color: 'black' }"
           >Login</a
         >
+        <button
+          *ngIf="authInfo"
+          mat-button
+          [matMenuTriggerFor]="menu"
+          [ngStyle]="{ fontSize: '20px' }"
+        >
+          {{ authInfo.username }}
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="logout()">Logout</button>
+        </mat-menu>
       </div>
     </mat-grid-tile>
   </mat-grid-list>

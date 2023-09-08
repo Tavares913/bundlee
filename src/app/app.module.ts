@@ -24,6 +24,11 @@ import { MatCardModule } from '@angular/material/card';
 import { IndividualDetailComponent } from './individual/individual-detail/individual-detail.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { LoginComponent } from './components/login/login.component';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MyCollectionsComponent } from './components/collections/my-collections/my-collections.component';
+import { FavouritedCollectionsComponent } from './components/collections/favourited-collections/favourited-collections.component';
+import { SearchCollectionsComponent } from './components/collections/search-collections/search-collections.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +41,9 @@ import { LoginComponent } from './components/login/login.component';
     IndividualListComponent,
     IndividualDetailComponent,
     LoginComponent,
+    MyCollectionsComponent,
+    FavouritedCollectionsComponent,
+    SearchCollectionsComponent,
   ],
   imports: [
     BrowserModule,
@@ -54,6 +62,8 @@ import { LoginComponent } from './components/login/login.component';
     MatSnackBarModule,
     MatCardModule,
     MatDialogModule,
+    MatMenuModule,
+    MatTabsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

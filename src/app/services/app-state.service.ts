@@ -5,6 +5,7 @@ import { Individual } from '../components/individual/individual.component';
   providedIn: 'root',
 })
 export class AppStateService {
+  public attemptedRoute: string[] = ['/home'];
   private curIndividual: Individual | null = null;
 
   constructor() {}

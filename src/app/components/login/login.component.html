@@ -22,11 +22,16 @@
     </div>
     <mat-form-field>
       <mat-label>Username</mat-label>
-      <input matInput [(ngModel)]="username" />
+      <input matInput [(ngModel)]="username" (keyup.enter)="submitLogin()" />
     </mat-form-field>
     <mat-form-field>
       <mat-label>Password</mat-label>
-      <input matInput [(ngModel)]="password" type="password" />
+      <input
+        matInput
+        [(ngModel)]="password"
+        type="password"
+        (keyup.enter)="submitLogin()"
+      />
     </mat-form-field>
     <button
       mat-raised-button
