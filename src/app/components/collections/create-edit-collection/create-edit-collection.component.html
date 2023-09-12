@@ -1,0 +1,18 @@
+<h2 mat-dialog-title>{{ collection.id.length > 0 ? "Edit" : "Create" }}</h2>
+<mat-dialog-content>
+  <mat-form-field [ngStyle]="{ width: '100%' }">
+    <mat-label>Name</mat-label>
+    <input
+      matInput
+      placeholder="..."
+      [(ngModel)]="collection.name"
+      name="name"
+    />
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-raised-button color="primary" (click)="updateOrCreate()">
+    {{ collection.id.length > 0 ? "Edit" : "Create" }}
+  </button>
+</mat-dialog-actions>

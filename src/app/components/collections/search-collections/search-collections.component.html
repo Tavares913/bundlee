@@ -1,1 +1,15 @@
-<p>search-collections works!</p>
+<div [ngStyle]="{ boxSizing: 'border-box', padding: theme.spacing['2'] }">
+  <mat-form-field [ngStyle]="{ width: '100%' }">
+    <mat-label>Search</mat-label>
+    <input
+      matInput
+      placeholder="..."
+      [(ngModel)]="search"
+      name="search"
+      (keyup.enter)="searchCollection({ refresh: true })"
+    />
+    <mat-icon matSuffix (click)="searchCollection({ refresh: true })"
+      >search</mat-icon
+    >
+  </mat-form-field>
+</div>

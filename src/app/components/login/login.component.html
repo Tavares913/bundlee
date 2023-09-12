@@ -18,11 +18,11 @@
     }"
   >
     <div [ngStyle]="{ display: 'flex', justifyContent: 'center' }">
-      <h1>Login</h1>
+      <h1>{{ register ? "Register" : "Login" }}</h1>
     </div>
     <mat-form-field>
       <mat-label>Username</mat-label>
-      <input matInput [(ngModel)]="username" (keyup.enter)="submitLogin()" />
+      <input matInput [(ngModel)]="username" (keyup.enter)="regOrLogin()" />
     </mat-form-field>
     <mat-form-field>
       <mat-label>Password</mat-label>
@@ -30,7 +30,7 @@
         matInput
         [(ngModel)]="password"
         type="password"
-        (keyup.enter)="submitLogin()"
+        (keyup.enter)="regOrLogin()"
       />
     </mat-form-field>
     <button
@@ -39,7 +39,7 @@
         backgroundColor: theme.colours.button.success,
         color: 'white'
       }"
-      (click)="submitLogin()"
+      (click)="regOrLogin()"
     >
       SUBMIT
     </button>

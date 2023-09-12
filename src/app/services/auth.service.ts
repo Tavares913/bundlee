@@ -18,6 +18,20 @@ export class AuthService {
     private appStateService: AppStateService
   ) {}
 
+  signup(username: string, password: string) {
+    this.http
+      .post<string>(`${this.baseUrl}/signup`, { username, password })
+      .subscribe(
+        (data) => {
+          console.log(data);
+          this.login(username, password);
+        },
+        (e) => {
+          console.log(e);
+          this.authErrorMessage.next(e.error || 'An error occured.');
+        }
+      );
+  }
   login(username: string, password: string) {
     this.http
       .post<AuthResponse>(`${this.baseUrl}/login`, {
@@ -26,6 +40,7 @@ export class AuthService {
       })
       .subscribe(
         (data) => {
+          console.log(data);
           const loggedInUser: User = {
             ...data,
             expiration: new Date(Date.now() + 1000 * 60 * 60),
@@ -33,10 +48,11 @@ export class AuthService {
           localStorage.setItem('user', JSON.stringify(loggedInUser));
           this.authInfo.next(loggedInUser);
           this.router.navigate(this.appStateService.attemptedRoute);
-          this.autoLogout(Date.now() + 1000 * 60 * 60);
+          this.autoLogout(1000 * 60 * 60);
         },
         (e) => {
-          this.authErrorMessage.next('Unable to log in.');
+          console.log(e);
+          this.authErrorMessage.next(e.error || 'An error occured');
         }
       );
   }

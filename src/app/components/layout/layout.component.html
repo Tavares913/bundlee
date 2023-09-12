@@ -43,19 +43,24 @@
       >
         <a
           *ngIf="!authInfo"
-          routerLink="/register"
+          (click)="goToRegisterOrLogin('register')"
           [ngStyle]="{
             textDecoration: 'none',
             color: 'black',
-            marginRight: theme.spacing['2']
+            marginRight: theme.spacing['2'],
+            cursor: 'pointer'
           }"
         >
           Register
         </a>
         <a
           *ngIf="!authInfo"
-          routerLink="/login"
-          [ngStyle]="{ textDecoration: 'none', color: 'black' }"
+          (click)="goToRegisterOrLogin('login')"
+          [ngStyle]="{
+            textDecoration: 'none',
+            color: 'black',
+            cursor: 'pointer'
+          }"
           >Login</a
         >
         <button

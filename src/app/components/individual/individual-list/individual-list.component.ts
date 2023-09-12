@@ -4,7 +4,7 @@ import { Theme } from 'src/app/theme';
 import { Util } from 'src/app/util';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { MatDialog } from '@angular/material/dialog';
-import { IndividualDetailComponent } from 'src/app/individual/individual-detail/individual-detail.component';
+import { IndividualDetailComponent } from 'src/app/components/individual/individual-detail/individual-detail.component';
 
 @Component({
   selector: 'app-individual-list',

@@ -97,7 +97,9 @@ export class IndividualComponent {
       const anime = data.data.Page.media;
       const formattedData: Individual[] = anime.map((d) => {
         return {
-          id: d.id.toString(),
+          id: '',
+          platformId: d.id.toString(),
+          platform: 'anilist',
           title: d.title['romaji'] || '',
           type: d.type.toLowerCase(),
           rating: {
@@ -129,7 +131,9 @@ export class IndividualComponent {
                   (r: any) => r.type === 'cover_art'
                 );
                 return {
-                  id: d.id,
+                  id: '',
+                  platformId: d.id,
+                  platform: 'mangadex',
                   title:
                     d.attributes.title['en'] ||
                     d.attributes.description['jp'] ||
@@ -199,6 +203,8 @@ export class IndividualComponent {
           const formattedData: Individual[] = data.data.games.map((d) => {
             return {
               id: '',
+              platformId: '',
+              platform: 'metacritic',
               title: d.title,
               type: 'game',
               year: new Date(d.releaseDate).getFullYear(),
@@ -222,7 +228,9 @@ export class IndividualComponent {
         (data) => {
           const formattedData = data.results.map((d) => {
             return {
-              id: d.id,
+              id: '',
+              platformId: d.id,
+              platform: 'imdb',
               title: d.title,
               type: d.type.toLowerCase(),
               year: d.year,
@@ -233,7 +241,6 @@ export class IndividualComponent {
               thumbnailLink: d.image,
             };
           });
-          console.log(formattedData);
           this.paginationInfo.total = data.results.length;
           this.paginationInfo.perPage = data.results.length;
           this.paginationInfo.page = 1;
@@ -256,6 +263,8 @@ export class IndividualComponent {
 
 export interface Individual {
   id: string;
+  platformId: string;
+  platform: string;
   title: string;
   type: string;
   year: number;
@@ -266,4 +275,5 @@ export interface Individual {
   } | null;
   coverLink: string;
   thumbnailLink: string;
+  extra?: any;
 }

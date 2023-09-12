@@ -16,12 +16,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { IndividualListComponent } from './components/individual/individual-list/individual-list.component';
 import { MatCardModule } from '@angular/material/card';
-import { IndividualDetailComponent } from './individual/individual-detail/individual-detail.component';
+import { IndividualDetailComponent } from './components/individual/individual-detail/individual-detail.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { LoginComponent } from './components/login/login.component';
 import { MatMenuModule } from '@angular/material/menu';
@@ -29,6 +29,9 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MyCollectionsComponent } from './components/collections/my-collections/my-collections.component';
 import { FavouritedCollectionsComponent } from './components/collections/favourited-collections/favourited-collections.component';
 import { SearchCollectionsComponent } from './components/collections/search-collections/search-collections.component';
+import { CreateEditCollectionComponent } from './components/collections/create-edit-collection/create-edit-collection.component';
+import { AuthInterceptorService } from './services/auth-interceptor.service';
+import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
   declarations: [
@@ -44,6 +47,7 @@ import { SearchCollectionsComponent } from './components/collections/search-coll
     MyCollectionsComponent,
     FavouritedCollectionsComponent,
     SearchCollectionsComponent,
+    CreateEditCollectionComponent,
   ],
   imports: [
     BrowserModule,
@@ -64,8 +68,15 @@ import { SearchCollectionsComponent } from './components/collections/search-coll
     MatDialogModule,
     MatMenuModule,
     MatTabsModule,
+    MatTableModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

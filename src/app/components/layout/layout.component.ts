@@ -1,5 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { AppStateService } from 'src/app/services/app-state.service';
 import { AuthService, User } from 'src/app/services/auth.service';
 import { Theme } from 'src/app/theme';
 
@@ -14,7 +16,11 @@ export class LayoutComponent implements OnInit, OnDestroy {
   authInfo: User | null = null;
   authInfoSubscription: Subscription = Subscription.EMPTY;
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private appStateService: AppStateService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.authService.autologin();
@@ -28,5 +34,15 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   logout() {
     this.authService.logout();
+  }
+  goToRegisterOrLogin(option: string) {
+    if (option === 'register') {
+      this.appStateService.setResgister(true);
+      this.router.navigate(['/login']);
+    }
+    if (option === 'login') {
+      this.appStateService.setResgister(false);
+      this.router.navigate(['/login']);
+    }
   }
 }

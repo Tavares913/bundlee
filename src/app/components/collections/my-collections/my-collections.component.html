@@ -1,9 +1,28 @@
 <div
   [ngStyle]="{
     width: '100%',
+    height: '90vh',
     boxSizing: 'border-box',
     padding: theme.spacing['2']
   }"
 >
-  <p>test</p>
+  <div
+    [ngStyle]="{ width: '100%', display: 'flex', justifyContent: 'flex-start' }"
+  >
+    <button mat-raised-button color="primary" (click)="openCreateDialog()">
+      Create
+    </button>
+  </div>
+  <div
+    *ngIf="collections.length === 0"
+    [ngStyle]="{
+      width: '100%',
+      height: '70%',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center'
+    }"
+  >
+    <p>You currently have no collections.</p>
+  </div>
 </div>
