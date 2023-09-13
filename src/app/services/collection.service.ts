@@ -11,10 +11,20 @@ export class CollectionService {
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
-  createCollection(name: string) {
-    return this.http.post<{ message: string }>(`${this.baseUrl}/create`, {
-      name,
-    });
+  createUpdateCollection(collection: Collection) {
+    let sendObj = collection;
+    const sendIndividuals = collection.individuals.map((i) => ({
+      ...i,
+      description: i.description.substring(0, 97) + '...',
+      rating: null,
+    }));
+    sendObj.individuals = sendIndividuals;
+    console.log(sendObj);
+
+    return this.http.post<{ message: string }>(
+      `${this.baseUrl}/create-edit`,
+      sendObj
+    );
   }
   getCollections() {
     return this.http.get<Collection[]>(`${this.baseUrl}/get`);

@@ -9,9 +9,43 @@
   <div
     [ngStyle]="{ width: '100%', display: 'flex', justifyContent: 'flex-start' }"
   >
-    <button mat-raised-button color="primary" (click)="openCreateDialog()">
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="openCreateEditDialog({ id: -1, name: '', individuals: [] })"
+    >
       Create
     </button>
+  </div>
+  <div
+    *ngIf="collections.length > 0"
+    [ngStyle]="{ marginTop: theme.spacing['2'] }"
+  >
+    <table mat-table [dataSource]="collections" class="mat-elevation-z8">
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td
+          mat-cell
+          *matCellDef="let collection"
+          (click)="openCreateEditDialog(collection)"
+        >
+          {{ collection.name }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="individuals">
+        <th mat-header-cell *matHeaderCellDef>Individuals</th>
+        <td
+          mat-cell
+          *matCellDef="let collection"
+          (click)="openCreateEditDialog(collection)"
+        >
+          {{ listIndividuals(collection) }}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="collectionTableColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: collectionTableColumns"></tr>
+    </table>
   </div>
   <div
     *ngIf="collections.length === 0"

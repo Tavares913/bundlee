@@ -56,7 +56,7 @@ export class IndividualDetailComponent implements OnInit {
       this.individual?.type === 'tvseries'
     ) {
       this.imdbService
-        .getTitleDetails(this.individual.id)
+        .getTitleDetails(this.individual.platformId)
         .subscribe((data: ImdbGetTitleDetailsResponse) => {
           console.log(data);
           this.individual = {

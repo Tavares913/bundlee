@@ -32,6 +32,8 @@ import { SearchCollectionsComponent } from './components/collections/search-coll
 import { CreateEditCollectionComponent } from './components/collections/create-edit-collection/create-edit-collection.component';
 import { AuthInterceptorService } from './services/auth-interceptor.service';
 import { MatTableModule } from '@angular/material/table';
+import { CdkAccordionModule } from '@angular/cdk/accordion';
+import { MatListModule } from '@angular/material/list';
 
 @NgModule({
   declarations: [
@@ -69,6 +71,8 @@ import { MatTableModule } from '@angular/material/table';
     MatMenuModule,
     MatTabsModule,
     MatTableModule,
+    CdkAccordionModule,
+    MatListModule,
   ],
   providers: [
     {

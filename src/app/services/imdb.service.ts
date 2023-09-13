@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Individual } from '../components/individual/individual.component';
 
 @Injectable({
   providedIn: 'root',
@@ -19,6 +20,26 @@ export class ImdbService {
     return this.http.get<ImdbGetTitleDetailsResponse>(
       `${this.baseUrl}/title/${id}`
     );
+  }
+
+  imdbMoviesToIndividuals(res: ImdbSearchMoviesResponse) {
+    const formattedData: Individual[] = res.results.map((d) => {
+      return {
+        id: -1,
+        platformId: d.id,
+        platform: 'imdb',
+        title: d.title,
+        type: d.type.toLowerCase(),
+        year: d.year,
+        description: '',
+        status: '',
+        rating: null,
+        coverLink: d.image_large,
+        thumbnailLink: d.image,
+      };
+    });
+
+    return formattedData;
   }
 }
 

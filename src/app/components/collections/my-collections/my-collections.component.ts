@@ -17,6 +17,7 @@ export class MyCollectionsComponent implements OnInit, OnDestroy {
 
   collections: Collection[] = [];
   collectionsSubcription: Subscription = Subscription.EMPTY;
+  collectionTableColumns: string[] = ['name', 'individuals'];
 
   constructor(
     private dialog: MatDialog,
@@ -38,13 +39,30 @@ export class MyCollectionsComponent implements OnInit, OnDestroy {
     this.collectionsSubcription.unsubscribe();
   }
 
-  openCreateDialog() {
-    this.dialog.open(CreateEditCollectionComponent);
+  openCreateEditDialog(c: Collection) {
+    this.dialog.open(CreateEditCollectionComponent, {
+      data: {
+        collection: c,
+      },
+    });
+  }
+
+  listIndividuals(c: Collection) {
+    const retval: string =
+      c.individuals.length > 0
+        ? c.individuals.reduce((acc, cur, i) => {
+            if (i === c.individuals.length - 1) {
+              return acc + cur.title;
+            }
+            return acc + cur.title + ', ';
+          }, '')
+        : 'Empty';
+    return retval;
   }
 }
 
 export interface Collection {
-  id: string;
+  id: number;
   name: string;
   individuals: Individual[];
 }

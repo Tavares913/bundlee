@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Individual } from '../components/individual/individual.component';
 
 @Injectable({
   providedIn: 'root',
@@ -114,6 +115,29 @@ export class AnilistService {
     const res = await fetch(url, options);
     const data = await res.json();
     return data;
+  }
+
+  anilistAnimeToIndividual(res: AnilistSearchAnimeResponse) {
+    const anime = res.data.Page.media;
+    const formattedData: Individual[] = anime.map((d) => {
+      return {
+        id: -1,
+        platformId: d.id.toString(),
+        platform: 'anilist',
+        title: d.title['romaji'] || '',
+        type: d.type.toLowerCase(),
+        rating: {
+          anilist: d.averageScore / 10,
+        },
+        year: d.seasonYear,
+        description: d.description,
+        status: d.status.toLowerCase(),
+        thumbnailLink: d.coverImage.large,
+        coverLink: d.coverImage.extraLarge,
+      };
+    });
+
+    return formattedData;
   }
 }
 

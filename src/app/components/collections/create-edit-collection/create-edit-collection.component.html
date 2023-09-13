@@ -1,18 +1,191 @@
-<h2 mat-dialog-title>{{ collection.id.length > 0 ? "Edit" : "Create" }}</h2>
-<mat-dialog-content>
-  <mat-form-field [ngStyle]="{ width: '100%' }">
-    <mat-label>Name</mat-label>
-    <input
-      matInput
-      placeholder="..."
-      [(ngModel)]="collection.name"
-      name="name"
-    />
-  </mat-form-field>
+<h2 mat-dialog-title>
+  {{ collection && collection.id >= 0 ? "Edit" : "Create" }}
+</h2>
+<mat-dialog-content [ngStyle]="{ width: '80vw' }">
+  <h3 [ngStyle]="{ color: 'black', marginBottom: theme.spacing['2'] }">
+    Basic Collection Information
+  </h3>
+  <div [ngStyle]="{ display: 'flex', flexDirection: 'column' }">
+    <div [ngStyle]="{ width: '100%' }">
+      <mat-form-field [ngStyle]="{ width: '100%' }">
+        <mat-label>Name</mat-label>
+        <input matInput placeholder="..." [(ngModel)]="formName" name="name" />
+      </mat-form-field>
+    </div>
+    <h3 [ngStyle]="{ color: 'black', marginBottom: '0px' }">
+      Add New Individuals
+    </h3>
+    <form class="form" [ngStyle]="{ width: '100%' }">
+      <mat-grid-list cols="12" rowHeight="105px" [ngStyle]="{ width: '100%' }">
+        <mat-grid-tile [colspan]="formMedia === 'games' ? 2 : 3">
+          <mat-form-field
+            [ngStyle]="{ marginRight: theme.spacing['2'], width: '100%' }"
+            subscriptSizing="dynamic"
+          >
+            <mat-label>For</mat-label>
+            <mat-select [(value)]="formMedia">
+              <mat-option *ngFor="let media of mediaOptions" [value]="media">{{
+                util.capitalizeEachWord(media)
+              }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile
+          *ngIf="formMedia === 'games'"
+          [colspan]="2"
+          [rowspan]="searchedIndividuals.length > 0 ? '3' : '1'"
+        >
+          <mat-form-field
+            [ngStyle]="{ marginRight: theme.spacing['2'], width: '100%' }"
+            subscriptSizing="dynamic"
+          >
+            <mat-label>Platform</mat-label>
+            <mat-select [(value)]="formPlatform">
+              <mat-option
+                *ngFor="let platform of platformOptions"
+                [value]="platform"
+                >{{ util.capitalizeEachWord(platform) }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile
+          [colspan]="formMedia === 'games' ? 8 : 9"
+          [rowspan]="searchedIndividuals.length > 0 ? '4' : '1'"
+          [ngStyle]="{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'flex-start'
+          }"
+        >
+          <div
+            [ngStyle]="{
+              display: 'flex',
+              flexDirection: 'column',
+              width: '100%'
+            }"
+          >
+            <mat-form-field
+              [ngStyle]="{ width: '100%', marginBottom: '0px' }"
+              subscriptSizing="dynamic"
+            >
+              <mat-label>Search</mat-label>
+              <input
+                matInput
+                placeholder="..."
+                [(ngModel)]="formSearch"
+                name="search"
+                (keyup.enter)="searchIndividual()"
+              />
+              <mat-icon matSuffix (click)="searchIndividual()">search</mat-icon>
+            </mat-form-field>
+            <mat-list
+              *ngIf="searchedIndividuals.length > 0"
+              [ngStyle]="{
+                border: '1px solid lightgrey',
+                width: '100%',
+                maxHeight: '300px',
+                overflow: 'auto',
+                marginTop: '0px'
+              }"
+            >
+              <mat-list-item
+                class="list-hover"
+                *ngFor="let searchedIndividual of searchedIndividuals"
+                [ngStyle]="{
+                  borderBottom: '1px solid lightgrey',
+                  padding: theme.spacing['1'],
+                  height: '125px'
+                }"
+                (click)="
+                  addSearchIndividualToFormIndividual(searchedIndividual)
+                "
+              >
+                <div
+                  [ngStyle]="{
+                    display: 'flex',
+                    alignItems: 'center',
+                   
+                  }"
+                >
+                  <img
+                    [src]="searchedIndividual.thumbnailLink"
+                    [ngStyle]="{ width: '100px', height: '100px' }"
+                  />
+                  <p [ngStyle]="{ paddingLeft: theme.spacing['2'] }">
+                    {{ searchedIndividual.title }}
+                  </p>
+                </div>
+              </mat-list-item>
+            </mat-list>
+          </div>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </form>
+  </div>
+  <h3 [ngStyle]="{ color: 'black', marginBottom: '0px' }">
+    Individuals Currently In List
+  </h3>
+  <div *ngIf="formIndividuals.length === 0">
+    No Individuals currently in list.
+  </div>
+  <cdk-accordion *ngIf="formIndividuals.length > 0">
+    <cdk-accordion-item
+      *ngFor="let formIndividual of formIndividuals; let index = index"
+      #accordionItem="cdkAccordionItem"
+      role="button"
+      tabindex="0"
+      [attr.id]="'accordion-header-' + index"
+      [attr.aria-expanded]="accordionItem.expanded"
+      [attr.aria-controls]="'accordion-body-' + index"
+    >
+      <div
+        (click)="accordionItem.toggle()"
+        [ngStyle]="{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          border: '1px solid lightgrey',
+          padding: theme.spacing['1'],
+          borderRadius: '5px 5px 0px 0px'
+        }"
+      >
+        <div>
+          {{ index + 1 + ". " + formIndividual.title }}
+        </div>
+        <div>
+          <mat-icon>keyboard_arrow_down</mat-icon>
+        </div>
+      </div>
+      <div
+        role="region"
+        [style.display]="accordionItem.expanded ? '' : 'none'"
+        [attr.id]="'accordion-body-' + index"
+        [ngStyle]="{
+          border: '1px solid lightgrey',
+          padding: theme.spacing['2'],
+          borderRadius: '0px 0px 5px 5px'
+        }"
+        [attr.aria-labelledby]="'accordion-header-' + index"
+      >
+        <div>{{ formIndividual.description }}</div>
+        <div>
+          <button
+            mat-raised-button
+            color="warn"
+            (click)="removeFormIndividual(formIndividual)"
+            [ngStyle]="{ marginTop: theme.spacing['1'] }"
+          >
+            Remove From Collection
+          </button>
+        </div>
+      </div>
+    </cdk-accordion-item>
+  </cdk-accordion>
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button mat-dialog-close>Cancel</button>
   <button mat-raised-button color="primary" (click)="updateOrCreate()">
-    {{ collection.id.length > 0 ? "Edit" : "Create" }}
+    {{ collection && collection.id >= 0 ? "Save" : "Create" }}
   </button>
 </mat-dialog-actions>
