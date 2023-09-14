@@ -1,5 +1,7 @@
 <h2 mat-dialog-title>
-  {{ collection && collection.id >= 0 ? "Edit" : "Create" }}
+  {{
+    collection && collection.id >= 0 ? "Edit Collection" : "Create Collection"
+  }}
 </h2>
 <mat-dialog-content [ngStyle]="{ width: '80vw' }">
   <h3 [ngStyle]="{ color: 'black', marginBottom: theme.spacing['2'] }">
@@ -30,11 +32,7 @@
             </mat-select>
           </mat-form-field>
         </mat-grid-tile>
-        <mat-grid-tile
-          *ngIf="formMedia === 'games'"
-          [colspan]="2"
-          [rowspan]="searchedIndividuals.length > 0 ? '3' : '1'"
-        >
+        <mat-grid-tile *ngIf="formMedia === 'games'" [colspan]="2">
           <mat-form-field
             [ngStyle]="{ marginRight: theme.spacing['2'], width: '100%' }"
             subscriptSizing="dynamic"
@@ -52,11 +50,6 @@
         <mat-grid-tile
           [colspan]="formMedia === 'games' ? 8 : 9"
           [rowspan]="searchedIndividuals.length > 0 ? '4' : '1'"
-          [ngStyle]="{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'flex-start'
-          }"
         >
           <div
             [ngStyle]="{
@@ -147,11 +140,25 @@
           alignItems: 'center',
           border: '1px solid lightgrey',
           padding: theme.spacing['1'],
-          borderRadius: '5px 5px 0px 0px'
+          borderRadius: accordionItem.expanded
+            ? '5px 5px 0px 0px'
+            : '5px 5px 5px 5px',
+          backgroundColor: accordionItem.expanded ? '#7904c2' : '',
+          color: accordionItem.expanded ? 'white' : '',
+          marginBottom: accordionItem.expanded ? '0px' : theme.spacing['1']
         }"
       >
         <div>
-          {{ index + 1 + ". " + formIndividual.title }}
+          {{
+            index +
+              1 +
+              ". " +
+              formIndividual.title +
+              (formIndividual.type
+                ? " - " + util.capitalizeEachWord(formIndividual.type)
+                : "") +
+              (formIndividual.year ? " (" + formIndividual.year + ")" : "")
+          }}
         </div>
         <div>
           <mat-icon>keyboard_arrow_down</mat-icon>
@@ -164,19 +171,35 @@
         [ngStyle]="{
           border: '1px solid lightgrey',
           padding: theme.spacing['2'],
-          borderRadius: '0px 0px 5px 5px'
+          borderRadius: '0px 0px 5px 5px',
+          marginBottom: accordionItem.expanded ? theme.spacing['1'] : '0px'
         }"
         [attr.aria-labelledby]="'accordion-header-' + index"
       >
         <div>{{ formIndividual.description }}</div>
-        <div>
+        <div
+          [ngStyle]="{
+            display: 'flex',
+            alignItems: 'center',
+            marginTop: theme.spacing['1']
+          }"
+        >
           <button
             mat-raised-button
-            color="warn"
             (click)="removeFormIndividual(formIndividual)"
-            [ngStyle]="{ marginTop: theme.spacing['1'] }"
+            [ngStyle]="{
+              backgroundColor: '#edd30c',
+              marginRight: theme.spacing['1']
+            }"
           >
             Remove From Collection
+          </button>
+          <button
+            mat-raised-button
+            [ngStyle]="{ backgroundColor: '#32a852' }"
+            (click)="goToDetails(formIndividual)"
+          >
+            More Details
           </button>
         </div>
       </div>
@@ -185,6 +208,14 @@
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button mat-dialog-close>Cancel</button>
+  <button
+    *ngIf="collection && collection.id !== -1"
+    mat-raised-button
+    color="warn"
+    (click)="delete()"
+  >
+    Delete
+  </button>
   <button mat-raised-button color="primary" (click)="updateOrCreate()">
     {{ collection && collection.id >= 0 ? "Save" : "Create" }}
   </button>

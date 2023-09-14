@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AppStateService } from 'src/app/services/app-state.service';
@@ -19,6 +20,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
     private appStateService: AppStateService,
+    private snackBar: MatSnackBar,
     private router: Router
   ) {}
 

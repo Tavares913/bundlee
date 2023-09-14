@@ -26,9 +26,11 @@ export class MyCollectionsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.collectionService.getCollections().subscribe((data: Collection[]) => {
-      this.appStateService.setCollections(data);
-    });
+    this.collectionService
+      .getUserCollections()
+      .subscribe((data: Collection[]) => {
+        this.appStateService.setCollections(data);
+      });
     this.collectionsSubcription = this.appStateService.collections.subscribe(
       (data) => {
         this.collections = data;

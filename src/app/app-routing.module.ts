@@ -8,6 +8,7 @@ import { AuthGuard } from './guards/auth-guard';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
+  { path: 'individual/:id', component: HomeComponent },
   { path: 'individual', component: IndividualComponent },
   {
     path: 'collections',

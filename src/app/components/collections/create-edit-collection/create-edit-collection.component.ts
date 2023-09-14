@@ -21,6 +21,8 @@ import {
   MetacriticService,
 } from 'src/app/services/metacritic.service';
 import { ImdbService } from 'src/app/services/imdb.service';
+import { AppStateService } from 'src/app/services/app-state.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-edit-collection',
@@ -37,6 +39,7 @@ export class CreateEditCollectionComponent implements OnInit {
   platformOptions: string[] = platformOptions;
 
   searchedIndividuals: Individual[] = [];
+  searched = false;
   searchedIndividualsExpandedIndex = 0;
 
   formName: string = '';
@@ -49,10 +52,12 @@ export class CreateEditCollectionComponent implements OnInit {
     private collectionService: CollectionService,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
+    private router: Router,
     private anilistService: AnilistService,
     private mangadexService: MangadexService,
     private metacriticService: MetacriticService,
     private imdbService: ImdbService,
+    private appStateService: AppStateService,
     @Inject(MAT_DIALOG_DATA)
     public injectedCollection: { collection: Collection }
   ) {}
@@ -84,7 +89,12 @@ export class CreateEditCollectionComponent implements OnInit {
               duration: 5000,
             }
           );
-          this.dialog.closeAll();
+          this.collectionService
+            .getUserCollections()
+            .subscribe((data: Collection[]) => {
+              this.appStateService.setCollections(data);
+              this.dialog.closeAll();
+            });
         },
         (e) => {
           this.snackBar.open(e.error, 'Close', {
@@ -92,6 +102,29 @@ export class CreateEditCollectionComponent implements OnInit {
           });
         }
       );
+  }
+
+  delete() {
+    if (!this.collection) return;
+    if (this.collection.id === -1) return;
+    this.collectionService.deleteCollection(this.collection.id).subscribe(
+      (data: any) => {
+        this.snackBar.open(data.message, 'Close', {
+          duration: 5000,
+        });
+        this.collectionService
+          .getUserCollections()
+          .subscribe((data: Collection[]) => {
+            this.appStateService.setCollections(data);
+            this.dialog.closeAll();
+          });
+      },
+      (e) => {
+        this.snackBar.open(e.message, 'Close', {
+          duration: 5000,
+        });
+      }
+    );
   }
 
   async searchIndividual() {
@@ -109,7 +142,7 @@ export class CreateEditCollectionComponent implements OnInit {
         });
         return;
       }
-
+      this.searched = true;
       const formattedData = this.anilistService.anilistAnimeToIndividual(data);
       this.searchedIndividuals = formattedData;
     } else if (this.formMedia === 'manga') {
@@ -121,32 +154,11 @@ export class CreateEditCollectionComponent implements OnInit {
         })
         .subscribe(
           (data: MangaDexSearchMangaResponse) => {
+            this.searched = true;
             const formattedData: Individual[] =
               this.mangadexService.mangadexMangaToIndividuals(data);
+
             this.searchedIndividuals = formattedData;
-            this.mangadexService
-              .getRatings(this.searchedIndividuals.map((i) => i.platformId))
-              .subscribe(
-                (data: MangaDexRatingResponse) => {
-                  for (const [key, value] of Object.entries(data.statistics)) {
-                    const i = this.searchedIndividuals.findIndex(
-                      (e) => e.platformId === key
-                    );
-                    if (i === -1) continue;
-                    this.searchedIndividuals[i] = {
-                      ...this.searchedIndividuals[i],
-                      rating: {
-                        mangadex: value.rating.bayesian,
-                      },
-                    };
-                  }
-                },
-                (e) => {
-                  this.snackBar.open(e.message, 'Close', {
-                    duration: 5000,
-                  });
-                }
-              );
           },
           (e) => {
             this.snackBar.open(e.message, 'Close', {
@@ -158,16 +170,18 @@ export class CreateEditCollectionComponent implements OnInit {
       this.metacriticService
         .searchGames(this.formSearch, this.formPlatform)
         .subscribe((data: MetacriticSearchGamesResponse) => {
+          this.searched = true;
           const formattedData: Individual[] =
             this.metacriticService.metacriticGamesToIndividuals(data);
-          this.formIndividuals = formattedData;
+          this.searchedIndividuals = formattedData;
         });
     } else if (this.formMedia === 'movies / tv shows') {
       this.imdbService.searchMovies(this.formSearch).subscribe(
         (data) => {
+          this.searched = true;
           const formattedData: Individual[] =
             this.imdbService.imdbMoviesToIndividuals(data);
-          this.formIndividuals = formattedData;
+          this.searchedIndividuals = formattedData;
         },
         (e) => {
           this.snackBar.open(e.message, 'Close', {
@@ -201,5 +215,11 @@ export class CreateEditCollectionComponent implements OnInit {
     );
     if (i === -1) return;
     this.formIndividuals.splice(i, 1);
+  }
+  goToDetails(individual: Individual) {
+    const url = this.router.serializeUrl(
+      this.router.createUrlTree([`/individual/${individual.id}`])
+    );
+    window.open(url, '_blank');
   }
 }

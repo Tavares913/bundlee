@@ -17,6 +17,7 @@ export class MetacriticService {
   }
 
   metacriticGamesToIndividuals(res: MetacriticSearchGamesResponse) {
+    if (!res.data.games) return [];
     const formattedData: Individual[] = res.data.games.map((d) => {
       return {
         id: -1,

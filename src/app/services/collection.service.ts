@@ -20,13 +20,19 @@ export class CollectionService {
     }));
     sendObj.individuals = sendIndividuals;
     console.log(sendObj);
-
     return this.http.post<{ message: string }>(
       `${this.baseUrl}/create-edit`,
       sendObj
     );
   }
-  getCollections() {
+  getUserCollections() {
     return this.http.get<Collection[]>(`${this.baseUrl}/get`);
+  }
+  searchCollections(name: string) {
+    return this.http.get<Collection[]>(`${this.baseUrl}/search?name=${name}`);
+  }
+  deleteCollection(id: number) {
+    console.log('deleting collection with id: ', id);
+    return this.http.delete(`${this.baseUrl}/delete?id=${id}`);
   }
 }

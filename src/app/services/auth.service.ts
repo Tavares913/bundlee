@@ -23,7 +23,6 @@ export class AuthService {
       .post<string>(`${this.baseUrl}/signup`, { username, password })
       .subscribe(
         (data) => {
-          console.log(data);
           this.login(username, password);
         },
         (e) => {
@@ -40,7 +39,6 @@ export class AuthService {
       })
       .subscribe(
         (data) => {
-          console.log(data);
           const loggedInUser: User = {
             ...data,
             expiration: new Date(Date.now() + 1000 * 60 * 60),
@@ -51,7 +49,6 @@ export class AuthService {
           this.autoLogout(1000 * 60 * 60);
         },
         (e) => {
-          console.log(e);
           this.authErrorMessage.next(e.error || 'An error occured');
         }
       );
