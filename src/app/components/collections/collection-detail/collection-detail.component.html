@@ -1,0 +1,22 @@
+<h2 mat-dialog-title>
+  {{ collection && collection.name }}
+</h2>
+<mat-dialog-content [ngStyle]="{ width: '80vw' }">
+  <h3>Individuals in Collection:</h3>
+  <div *ngIf="!collection?.individuals">
+    There are no individuals in this collection.
+  </div>
+  <app-individual-list
+    *ngIf="collection && collection.individuals"
+    [individuals]="collection.individuals"
+  ></app-individual-list>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div
+    [ngStyle]="{ width: '100%', display: 'flex', justifyContent: 'flex-end' }"
+  >
+    <mat-icon [ngStyle]="{ marginRight: theme.spacing['1'] }"
+      >favorite_border</mat-icon
+    >
+  </div>
+</mat-dialog-actions>

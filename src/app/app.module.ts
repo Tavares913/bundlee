@@ -34,6 +34,7 @@ import { AuthInterceptorService } from './services/auth-interceptor.service';
 import { MatTableModule } from '@angular/material/table';
 import { CdkAccordionModule } from '@angular/cdk/accordion';
 import { MatListModule } from '@angular/material/list';
+import { CollectionDetailComponent } from './components/collections/collection-detail/collection-detail.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { MatListModule } from '@angular/material/list';
     FavouritedCollectionsComponent,
     SearchCollectionsComponent,
     CreateEditCollectionComponent,
+    CollectionDetailComponent,
   ],
   imports: [
     BrowserModule,

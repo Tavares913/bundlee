@@ -65,7 +65,6 @@ export class CreateEditCollectionComponent implements OnInit {
   ngOnInit(): void {
     if (this.injectedCollection) {
       const injectedCollection = this.injectedCollection.collection;
-      console.log(injectedCollection);
       this.collection = injectedCollection;
       this.formName = injectedCollection.name;
       this.formIndividuals = injectedCollection.individuals;

@@ -173,8 +173,7 @@ export class IndividualComponent {
           const formattedData: Individual[] =
             this.imdbService.imdbMoviesToIndividuals(data);
           this.paginationInfo.total = data.results.length;
-          this.paginationInfo.perPage = data.results.length;
-          this.paginationInfo.page = 1;
+          this.paginationInfo.page += 1;
           this.loading = false;
           this.loadingPaginate = false;
           this.searched = true;

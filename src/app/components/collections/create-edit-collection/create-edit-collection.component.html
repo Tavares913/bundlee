@@ -122,89 +122,104 @@
   <div *ngIf="formIndividuals.length === 0">
     No Individuals currently in list.
   </div>
-  <cdk-accordion *ngIf="formIndividuals.length > 0">
-    <cdk-accordion-item
-      *ngFor="let formIndividual of formIndividuals; let index = index"
-      #accordionItem="cdkAccordionItem"
-      role="button"
-      tabindex="0"
-      [attr.id]="'accordion-header-' + index"
-      [attr.aria-expanded]="accordionItem.expanded"
-      [attr.aria-controls]="'accordion-body-' + index"
-    >
-      <div
-        (click)="accordionItem.toggle()"
-        [ngStyle]="{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          border: '1px solid lightgrey',
-          padding: theme.spacing['1'],
-          borderRadius: accordionItem.expanded
-            ? '5px 5px 0px 0px'
-            : '5px 5px 5px 5px',
-          backgroundColor: accordionItem.expanded ? '#7904c2' : '',
-          color: accordionItem.expanded ? 'white' : '',
-          marginBottom: accordionItem.expanded ? '0px' : theme.spacing['1']
-        }"
+  <div
+    *ngIf="formIndividuals.length > 0"
+    [ngStyle]="{
+      border: '1px solid grey',
+      backgroundColor: 'lightgrey',
+      padding: theme.spacing['2'],
+      borderRadius: '5px'
+    }"
+  >
+    <cdk-accordion>
+      <cdk-accordion-item
+        *ngFor="let formIndividual of formIndividuals; let index = index"
+        #accordionItem="cdkAccordionItem"
+        role="button"
+        tabindex="0"
+        [attr.id]="'accordion-header-' + index"
+        [attr.aria-expanded]="accordionItem.expanded"
+        [attr.aria-controls]="'accordion-body-' + index"
       >
-        <div>
-          {{
-            index +
-              1 +
-              ". " +
-              formIndividual.title +
-              (formIndividual.type
-                ? " - " + util.capitalizeEachWord(formIndividual.type)
-                : "") +
-              (formIndividual.year ? " (" + formIndividual.year + ")" : "")
-          }}
-        </div>
-        <div>
-          <mat-icon>keyboard_arrow_down</mat-icon>
-        </div>
-      </div>
-      <div
-        role="region"
-        [style.display]="accordionItem.expanded ? '' : 'none'"
-        [attr.id]="'accordion-body-' + index"
-        [ngStyle]="{
-          border: '1px solid lightgrey',
-          padding: theme.spacing['2'],
-          borderRadius: '0px 0px 5px 5px',
-          marginBottom: accordionItem.expanded ? theme.spacing['1'] : '0px'
-        }"
-        [attr.aria-labelledby]="'accordion-header-' + index"
-      >
-        <div>{{ formIndividual.description }}</div>
         <div
+          (click)="accordionItem.toggle()"
           [ngStyle]="{
             display: 'flex',
+            justifyContent: 'space-between',
             alignItems: 'center',
-            marginTop: theme.spacing['1']
+            border: '1px solid grey',
+            padding: theme.spacing['1'],
+            borderRadius: accordionItem.expanded
+              ? '5px 5px 0px 0px'
+              : '5px 5px 5px 5px',
+            backgroundColor: accordionItem.expanded ? '#7904c2' : 'white',
+            color: accordionItem.expanded ? 'white' : '',
+            marginBottom: accordionItem.expanded
+              ? '0px'
+              : index === formIndividuals.length - 1
+              ? '0px'
+              : theme.spacing['1']
           }"
         >
-          <button
-            mat-raised-button
-            (click)="removeFormIndividual(formIndividual)"
+          <div>
+            {{
+              index +
+                1 +
+                ". " +
+                formIndividual.title +
+                (formIndividual.type
+                  ? " - " + util.capitalizeEachWord(formIndividual.type)
+                  : "") +
+                (formIndividual.year ? " (" + formIndividual.year + ")" : "")
+            }}
+          </div>
+          <div>
+            <mat-icon>keyboard_arrow_down</mat-icon>
+          </div>
+        </div>
+        <div
+          role="region"
+          [style.display]="accordionItem.expanded ? '' : 'none'"
+          [attr.id]="'accordion-body-' + index"
+          [ngStyle]="{
+            border: '1px solid black',
+            backgroundColor: 'white',
+            padding: theme.spacing['2'],
+            borderRadius: '0px 0px 5px 5px',
+            marginBottom: accordionItem.expanded ? theme.spacing['1'] : '0px'
+          }"
+          [attr.aria-labelledby]="'accordion-header-' + index"
+        >
+          <div>{{ formIndividual.description }}</div>
+          <div
             [ngStyle]="{
-              backgroundColor: '#edd30c',
-              marginRight: theme.spacing['1']
+              display: 'flex',
+              alignItems: 'center',
+              marginTop: theme.spacing['1']
             }"
           >
-            Remove From Collection
-          </button>
-          <button
-            mat-raised-button
-            [ngStyle]="{ backgroundColor: '#32a852' }"
-            (click)="goToDetails(formIndividual)"
-          >
-            More Details
-          </button>
+            <button
+              mat-raised-button
+              (click)="removeFormIndividual(formIndividual)"
+              [ngStyle]="{
+                backgroundColor: '#edd30c',
+                marginRight: theme.spacing['1']
+              }"
+            >
+              Remove From Collection
+            </button>
+            <button
+              mat-raised-button
+              [ngStyle]="{ backgroundColor: '#32a852' }"
+              (click)="goToDetails(formIndividual)"
+            >
+              More Details
+            </button>
+          </div>
         </div>
-      </div>
-    </cdk-accordion-item>
-  </cdk-accordion>
+      </cdk-accordion-item>
+    </cdk-accordion>
+  </div>
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button mat-dialog-close>Cancel</button>

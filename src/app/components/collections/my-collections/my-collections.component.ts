@@ -6,6 +6,7 @@ import { CreateEditCollectionComponent } from '../create-edit-collection/create-
 import { AppStateService } from 'src/app/services/app-state.service';
 import { Subscription } from 'rxjs';
 import { CollectionService } from 'src/app/services/collection.service';
+import { Util } from 'src/app/util';
 
 @Component({
   selector: 'app-my-collections',
@@ -14,6 +15,7 @@ import { CollectionService } from 'src/app/services/collection.service';
 })
 export class MyCollectionsComponent implements OnInit, OnDestroy {
   theme = Theme;
+  util = Util;
 
   collections: Collection[] = [];
   collectionsSubcription: Subscription = Subscription.EMPTY;
@@ -47,19 +49,6 @@ export class MyCollectionsComponent implements OnInit, OnDestroy {
         collection: c,
       },
     });
-  }
-
-  listIndividuals(c: Collection) {
-    const retval: string =
-      c.individuals.length > 0
-        ? c.individuals.reduce((acc, cur, i) => {
-            if (i === c.individuals.length - 1) {
-              return acc + cur.title;
-            }
-            return acc + cur.title + ', ';
-          }, '')
-        : 'Empty';
-    return retval;
   }
 }
 
