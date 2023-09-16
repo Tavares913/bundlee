@@ -1,6 +1,7 @@
 import { Collection } from './components/collections/my-collections/my-collections.component';
 
 export class Util {
+  static BASE_URL = 'http://localhost:8080';
   static capitalizeEachWord(text: string | null | undefined) {
     if (!text) return '';
     const words = text.split(' ');

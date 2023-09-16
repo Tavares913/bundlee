@@ -1,12 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Individual } from '../components/individual/individual.component';
+import { Util } from '../util';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MetacriticService {
-  private baseUrl = 'http://localhost:8080/api/metacritic/games';
+  util = Util;
+  private baseUrl = `${this.util.BASE_URL}/api/metacritic/games`;
 
   constructor(private http: HttpClient) {}
 

@@ -3,12 +3,14 @@ import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
 import { Collection } from '../components/collections/my-collections/my-collections.component';
 import { map } from 'rxjs/operators';
+import { Util } from '../util';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CollectionService {
-  private baseUrl = 'http://localhost:8080/api/collection';
+  util = Util;
+  private baseUrl = `${this.util.BASE_URL}/api/collection`;
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 

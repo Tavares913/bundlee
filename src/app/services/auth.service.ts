@@ -5,12 +5,14 @@ import { AppStateService } from './app-state.service';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { Collection } from '../components/collections/my-collections/my-collections.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Util } from '../util';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private baseUrl = 'http://localhost:8080/api/auth';
+  util = Util;
+  private baseUrl = `${this.util.BASE_URL}/api/auth`;
   authInfo = new BehaviorSubject<User | null>(null);
   authErrorMessage = new Subject<string>();
 
