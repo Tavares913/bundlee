@@ -39,7 +39,7 @@
           <mat-label>Search</mat-label>
           <input
             matInput
-            placeholder="..."
+            [placeholder]="getPlaceholder()"
             [(ngModel)]="search"
             name="search"
             (keyup.enter)="searchIndividual({ refresh: true })"

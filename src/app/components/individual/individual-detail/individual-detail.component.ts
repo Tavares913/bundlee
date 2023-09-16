@@ -5,7 +5,6 @@ import {
   AnilistService,
 } from 'src/app/services/anilist.service';
 import { AppStateService } from 'src/app/services/app-state.service';
-import { ComickService } from 'src/app/services/comick.service';
 import {
   ImdbGetTitleDetailsResponse,
   ImdbService,
@@ -26,7 +25,6 @@ export class IndividualDetailComponent implements OnInit {
 
   constructor(
     private appState: AppStateService,
-    private comickService: ComickService,
     private anilistService: AnilistService,
     private imdbService: ImdbService
   ) {}

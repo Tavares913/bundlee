@@ -188,6 +188,14 @@ export class IndividualComponent {
       );
     }
   }
+
+  getPlaceholder() {
+    if (this.media === 'anime') return 'ex. one piece';
+    if (this.media === 'manga') return 'ex. berserk';
+    if (this.media === 'games') return 'ex. hollow knight (switch)';
+    if (this.media === 'movies / tv shows') return 'ex. breaking bad';
+    return '...';
+  }
 }
 
 export interface Individual {
