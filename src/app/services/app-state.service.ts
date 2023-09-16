@@ -13,7 +13,13 @@ export class AppStateService {
   public register = new BehaviorSubject<boolean>(false);
   // my collections component, list of users collections
   public collections = new BehaviorSubject<Collection[]>([]);
+  // favourite collections componenent, list of users favourited collections
+  public favouritedCollections = new BehaviorSubject<Collection[]>([]);
+  // individual detail component, individual whose details to display
   private curIndividual: Individual | null = null;
+  // search collections component, search term and searched individuals
+  public searchedCollections = new BehaviorSubject<Collection[]>([]);
+  public searchCollectionsTerm = '';
 
   constructor() {}
 
@@ -28,5 +34,11 @@ export class AppStateService {
   }
   public setCollections(c: Collection[]) {
     this.collections.next(c);
+  }
+  public setFavouritedCollections(c: Collection[]) {
+    this.favouritedCollections.next(c);
+  }
+  public setSearchedCollections(c: Collection[]) {
+    this.searchedCollections.next(c);
   }
 }

@@ -35,6 +35,7 @@ import { MatTableModule } from '@angular/material/table';
 import { CdkAccordionModule } from '@angular/cdk/accordion';
 import { MatListModule } from '@angular/material/list';
 import { CollectionDetailComponent } from './components/collections/collection-detail/collection-detail.component';
+import { CollectionListComponent } from './components/collections/collection-list/collection-list.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { CollectionDetailComponent } from './components/collections/collection-d
     SearchCollectionsComponent,
     CreateEditCollectionComponent,
     CollectionDetailComponent,
+    CollectionListComponent,
   ],
   imports: [
     BrowserModule,

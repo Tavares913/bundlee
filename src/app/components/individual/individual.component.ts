@@ -158,7 +158,6 @@ export class IndividualComponent {
       this.metacriticService
         .searchGames(this.search, this.platform)
         .subscribe((data: MetacriticSearchGamesResponse) => {
-          console.log(data);
           const formattedData: Individual[] =
             this.metacriticService.metacriticGamesToIndividuals(data);
           this.loading = false;

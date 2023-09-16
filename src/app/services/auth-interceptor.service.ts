@@ -21,7 +21,6 @@ export class AuthInterceptorService implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    console.log('running interceptor');
     return this.authService.authInfo.pipe(
       take(1),
       exhaustMap((authInfo) => {

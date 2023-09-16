@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppStateService } from './app-state.service';
 import { BehaviorSubject, Subject } from 'rxjs';
+import { Collection } from '../components/collections/my-collections/my-collections.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +17,8 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private appStateService: AppStateService
+    private appStateService: AppStateService,
+    private snackBar: MatSnackBar
   ) {}
 
   signup(username: string, password: string) {
@@ -26,7 +29,6 @@ export class AuthService {
           this.login(username, password);
         },
         (e) => {
-          console.log(e);
           this.authErrorMessage.next(e.error || 'An error occured.');
         }
       );
@@ -47,6 +49,13 @@ export class AuthService {
           this.authInfo.next(loggedInUser);
           this.router.navigate(this.appStateService.attemptedRoute);
           this.autoLogout(1000 * 60 * 60);
+          this.snackBar.open(
+            `${loggedInUser.username} successfully logged in!`,
+            'Close',
+            {
+              duration: 5000,
+            }
+          );
         },
         (e) => {
           this.authErrorMessage.next(e.error || 'An error occured');
@@ -63,6 +72,7 @@ export class AuthService {
   logout() {
     this.authInfo.next(null);
     localStorage.removeItem('user');
+    this.router.navigate(['/home']);
   }
   autoLogout(time: number) {
     setTimeout(() => {

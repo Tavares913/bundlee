@@ -21,4 +21,9 @@ export class Util {
         : 'Empty';
     return retval;
   }
+
+  static floorDown(n: number, f: number) {
+    if (n > f) return f;
+    return n;
+  }
 }

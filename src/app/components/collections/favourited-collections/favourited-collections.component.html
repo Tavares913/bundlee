@@ -1,1 +1,18 @@
-<p>favourited-collections works!</p>
+<div
+  *ngIf="favouritedCollections.length === 0"
+  [ngStyle]="{
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: theme.spacing['2']
+  }"
+>
+  No collections favourited.
+</div>
+<div
+  *ngIf="favouritedCollections.length > 0"
+  [ngStyle]="{ padding: theme.spacing['2'] }"
+>
+  <app-collection-list
+    [collections]="favouritedCollections"
+  ></app-collection-list>
+</div>

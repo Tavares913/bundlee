@@ -1,1 +1,62 @@
-<p>home works!</p>
+<div
+  [ngStyle]="{
+    width: '100%',
+    padding: theme.spacing['2'],
+    boxSizing: 'border-box',
+    display: 'flex',
+    justifyContent: 'center'
+  }"
+>
+  <h2>Welcome to Bundlee!</h2>
+</div>
+<div [ngStyle]="{ display: 'flex' }">
+  <div [ngStyle]="{ width: '50%', padding: theme.spacing['2'] }">
+    <mat-card [ngStyle]="{ height: '160px' }">
+      <mat-card-header>
+        <mat-card-title>Collections</mat-card-title>
+        <mat-card-subtitle>Add Individuals to Sets</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>
+          Add individuals to collections in order to recommend them in sets to
+          your friends. You can search other people's collections and favourite
+          any you come accross too!
+        </p>
+      </mat-card-content>
+      <mat-card-actions></mat-card-actions>
+    </mat-card>
+  </div>
+  <div [ngStyle]="{ width: '50%', padding: theme.spacing['2'] }">
+    <mat-card [ngStyle]="{ height: '160px' }">
+      <mat-card-header>
+        <mat-card-title>Individuals</mat-card-title>
+        <mat-card-subtitle
+          >Media such as anime, manga, video games, movies, and TV
+          shows</mat-card-subtitle
+        >
+      </mat-card-header>
+      <mat-card-content>
+        <p>
+          Search for any anime (ex. one piece), manga (ex. berserk), video games
+          (ex. hollow knight [on the nintendo switch]), or tv shows (ex.
+          breaking bad), see their info and ratings, and add them to
+          collections. Info is obtained using the following APIs: anilist
+          (anime), mangadex (manga), metacritic (video games), IMDB (movies/tv
+          shows)
+        </p>
+      </mat-card-content>
+      <mat-card-actions></mat-card-actions>
+    </mat-card>
+  </div>
+</div>
+<div
+  [ngStyle]="{
+    width: '100%',
+    paddingTop: theme.spacing['5'],
+    paddingLeft: theme.spacing['2'],
+    boxSizing: 'border-box',
+  }"
+>
+  <h2>Search for Individuals here:</h2>
+</div>
+<app-individual></app-individual>

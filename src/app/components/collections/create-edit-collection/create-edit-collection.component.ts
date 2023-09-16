@@ -23,6 +23,7 @@ import {
 import { ImdbService } from 'src/app/services/imdb.service';
 import { AppStateService } from 'src/app/services/app-state.service';
 import { Router } from '@angular/router';
+import { IndividualDetailComponent } from '../../individual/individual-detail/individual-detail.component';
 
 @Component({
   selector: 'app-create-edit-collection',
@@ -143,6 +144,11 @@ export class CreateEditCollectionComponent implements OnInit {
       }
       this.searched = true;
       const formattedData = this.anilistService.anilistAnimeToIndividual(data);
+      if (formattedData.length === 0) {
+        this.snackBar.open('No results found.', 'Close', {
+          duration: 5000,
+        });
+      }
       this.searchedIndividuals = formattedData;
     } else if (this.formMedia === 'manga') {
       this.mangadexService
@@ -158,6 +164,11 @@ export class CreateEditCollectionComponent implements OnInit {
               this.mangadexService.mangadexMangaToIndividuals(data);
 
             this.searchedIndividuals = formattedData;
+            if (formattedData.length === 0) {
+              this.snackBar.open('No results found.', 'Close', {
+                duration: 5000,
+              });
+            }
           },
           (e) => {
             this.snackBar.open(e.message, 'Close', {
@@ -173,6 +184,11 @@ export class CreateEditCollectionComponent implements OnInit {
           const formattedData: Individual[] =
             this.metacriticService.metacriticGamesToIndividuals(data);
           this.searchedIndividuals = formattedData;
+          if (formattedData.length === 0) {
+            this.snackBar.open('No results found.', 'Close', {
+              duration: 5000,
+            });
+          }
         });
     } else if (this.formMedia === 'movies / tv shows') {
       this.imdbService.searchMovies(this.formSearch).subscribe(
@@ -181,6 +197,11 @@ export class CreateEditCollectionComponent implements OnInit {
           const formattedData: Individual[] =
             this.imdbService.imdbMoviesToIndividuals(data);
           this.searchedIndividuals = formattedData;
+          if (formattedData.length === 0) {
+            this.snackBar.open('No results found.', 'Close', {
+              duration: 5000,
+            });
+          }
         },
         (e) => {
           this.snackBar.open(e.message, 'Close', {
@@ -215,10 +236,9 @@ export class CreateEditCollectionComponent implements OnInit {
     if (i === -1) return;
     this.formIndividuals.splice(i, 1);
   }
-  goToDetails(individual: Individual) {
-    const url = this.router.serializeUrl(
-      this.router.createUrlTree([`/individual/${individual.id}`])
-    );
-    window.open(url, '_blank');
+
+  openIndividualDialog(individual: Individual) {
+    this.appStateService.setIndividual(individual);
+    this.dialog.open(IndividualDetailComponent);
   }
 }

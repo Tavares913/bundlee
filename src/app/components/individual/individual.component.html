@@ -1,4 +1,11 @@
-<div [ngStyle]="{ padding: theme.spacing['2'] }">
+<div
+  [ngStyle]="{
+    paddingTop: theme.spacing['1'],
+    paddingLeft: theme.spacing['2'],
+    paddingRight: theme.spacing['2'],
+    paddingBottom: theme.spacing['2']
+  }"
+>
   <form class="form">
     <mat-grid-list cols="12" [ngStyle]="{ width: '100%' }">
       <mat-grid-tile [colspan]="media === 'games' ? 2 : 3">

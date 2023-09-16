@@ -8,6 +8,8 @@ export class Theme {
     },
     button: {
       success: '#2e8705',
+      success2: '#32a852',
+      warning: '#edd30c',
     },
   };
   static spacing = {

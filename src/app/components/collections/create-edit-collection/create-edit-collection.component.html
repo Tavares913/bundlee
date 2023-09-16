@@ -49,13 +49,19 @@
         </mat-grid-tile>
         <mat-grid-tile
           [colspan]="formMedia === 'games' ? 8 : 9"
-          [rowspan]="searchedIndividuals.length > 0 ? '4' : '1'"
+          [rowspan]="
+            searchedIndividuals.length > 0
+              ? util.floorDown(searchedIndividuals.length, 3) + 1
+              : '1'
+          "
+          [ngStyle]="{ marginTop: theme.spacing['3'] }"
         >
           <div
             [ngStyle]="{
               display: 'flex',
               flexDirection: 'column',
-              width: '100%'
+              width: '100%',
+              height: '100%',
             }"
           >
             <mat-form-field
@@ -202,7 +208,7 @@
               mat-raised-button
               (click)="removeFormIndividual(formIndividual)"
               [ngStyle]="{
-                backgroundColor: '#edd30c',
+                backgroundColor: theme.colours.button.warning,
                 marginRight: theme.spacing['1']
               }"
             >
@@ -210,8 +216,8 @@
             </button>
             <button
               mat-raised-button
-              [ngStyle]="{ backgroundColor: '#32a852' }"
-              (click)="goToDetails(formIndividual)"
+              [ngStyle]="{ backgroundColor: theme.colours.button.success2 }"
+              (click)="openIndividualDialog(formIndividual)"
             >
               More Details
             </button>

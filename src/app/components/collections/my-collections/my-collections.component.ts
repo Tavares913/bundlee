@@ -34,7 +34,7 @@ export class MyCollectionsComponent implements OnInit, OnDestroy {
         this.appStateService.setCollections(data);
       });
     this.collectionsSubcription = this.appStateService.collections.subscribe(
-      (data) => {
+      (data: any) => {
         this.collections = data;
       }
     );

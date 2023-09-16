@@ -15,8 +15,21 @@
   <div
     [ngStyle]="{ width: '100%', display: 'flex', justifyContent: 'flex-end' }"
   >
-    <mat-icon [ngStyle]="{ marginRight: theme.spacing['1'] }"
+    <mat-icon
+      *ngIf="!isFavourited()"
+      (click)="favourite()"
+      [ngStyle]="{ marginRight: theme.spacing['1'], cursor: 'pointer' }"
       >favorite_border</mat-icon
+    >
+    <mat-icon
+      *ngIf="isFavourited()"
+      (click)="unfavourite()"
+      [ngStyle]="{
+        marginRight: theme.spacing['1'],
+        color: 'red',
+        cursor: 'pointer'
+      }"
+      >favorite</mat-icon
     >
   </div>
 </mat-dialog-actions>
