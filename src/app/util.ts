@@ -2,7 +2,7 @@ import { Collection } from './components/collections/my-collections/my-collectio
 
 export class Util {
   // static BASE_URL = 'http://localhost:8080';
-  static BASE_URL = 'https://warm-citadel-40524-fd0d6386d1a2.herokuapp.com';
+  static BASE_URL = 'https://bundlee-backend-a154da1b1c32.herokuapp.com';
   static capitalizeEachWord(text: string | null | undefined) {
     if (!text) return '';
     const words = text.split(' ');
