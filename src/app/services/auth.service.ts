@@ -49,6 +49,7 @@ export class AuthService {
           };
           localStorage.setItem('user', JSON.stringify(loggedInUser));
           this.authInfo.next(loggedInUser);
+          this.appStateService.setLoginLoading(false);
           this.router.navigate(this.appStateService.attemptedRoute);
           this.autoLogout(1000 * 60 * 60);
           this.snackBar.open(

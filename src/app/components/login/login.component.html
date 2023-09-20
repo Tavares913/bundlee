@@ -41,7 +41,18 @@
       }"
       (click)="regOrLogin()"
     >
-      SUBMIT
+      <div *ngIf="!loading">SUBMIT</div>
+      <div *ngIf="loading">Loading...</div>
     </button>
+    <div
+      *ngIf="loading"
+      [ngStyle]="{
+        display: 'flex',
+        justifyContent: 'center',
+        marginTop: theme.spacing['2']
+      }"
+    >
+      Backend hosted on heroku, may take ~20 seconds to wake
+    </div>
   </div>
 </div>

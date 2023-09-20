@@ -15,8 +15,10 @@ export class LoginComponent implements OnInit, OnDestroy {
   username: string = '';
   password: string = '';
   register: boolean = false;
+  loading: boolean = true;
   loginErrorSubscription: Subscription = Subscription.EMPTY;
   registerSubscription: Subscription = Subscription.EMPTY;
+  loginLoadingSubscription: Subscription = Subscription.EMPTY;
 
   constructor(
     private authService: AuthService,
@@ -37,14 +39,21 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.register = data;
       }
     );
+    this.loginLoadingSubscription = this.appStateService.loginLoading.subscribe(
+      (data) => {
+        this.loading = data;
+      }
+    );
   }
 
   ngOnDestroy(): void {
     this.loginErrorSubscription.unsubscribe();
     this.registerSubscription.unsubscribe();
+    this.loginLoadingSubscription.unsubscribe();
   }
 
   regOrLogin() {
+    this.appStateService.setLoginLoading(true);
     if (this.register) {
       this.authService.signup(this.username, this.password);
     } else {

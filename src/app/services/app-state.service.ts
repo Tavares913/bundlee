@@ -11,6 +11,8 @@ export class AppStateService {
   public attemptedRoute: string[] = ['/home'];
   // for login component, whether logging in or registering
   public register = new BehaviorSubject<boolean>(false);
+  // for login component; whether currently logging in
+  public loginLoading = new BehaviorSubject<boolean>(false);
   // my collections component, list of users collections
   public collections = new BehaviorSubject<Collection[]>([]);
   // favourite collections componenent, list of users favourited collections
@@ -40,5 +42,8 @@ export class AppStateService {
   }
   public setSearchedCollections(c: Collection[]) {
     this.searchedCollections.next(c);
+  }
+  public setLoginLoading(b: boolean) {
+    this.loginLoading.next(b);
   }
 }
